@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postals – Account Deletion</title>
+  <meta name="description" content="How to request account deletion in Postals — data types deleted or retained." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:             #ffffff;
+      --bg-side:        #f8f9fa;
+      --bg-hover:       #f1f3f4;
+      --bg-active:      #e8f0fe;
+      --text-1:         #202124;
+      --text-2:         #3c4043;
+      --text-3:         #5f6368;
+      --text-4:         #80868b;
+      --border:         #dadce0;
+      --border-light:   #e8eaed;
+      --blue:           #1a73e8;
+      --blue-dark:      #1557b0;
+      --blue-bg:        #e8f0fe;
+      --blue-border:    #aecbfa;
+      --blue-text:      #185abc;
+      --amber-bg:       #fef7e0;
+      --amber-border:   #fbbc04;
+      --amber-text:     #5c3c00;
+      --green-bg:       #e6f4ea;
+      --green-border:   #34a853;
+      --green-text:     #137333;
+      --red-bg:         #fce8e6;
+      --red-border:     #ea4335;
+      --red-text:       #c5221f;
+      --link:           #1a73e8;
+      --header-h:       56px;
+      --sidebar-w:      248px;
+      --toc-w:          196px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:             #111110;
+        --bg-side:        #1a1a19;
+        --bg-hover:       #242422;
+        --bg-active:      #042c53;
+        --text-1:         #e8e6e0;
+        --text-2:         #9aa0a6;
+        --text-3:         #80868b;
+        --text-4:         #5f6368;
+        --border:         #3c4043;
+        --border-light:   #2d2f31;
+        --blue:           #8ab4f8;
+        --blue-dark:      #aecbfa;
+        --blue-bg:        #042c53;
+        --blue-border:    #185abc;
+        --blue-text:      #aecbfa;
+        --amber-bg:       #3d2800;
+        --amber-border:   #8a6200;
+        --amber-text:     #fdd663;
+        --green-bg:       #0d2b1a;
+        --green-border:   #137333;
+        --green-text:     #81c995;
+        --red-bg:         #310c09;
+        --red-border:     #c5221f;
+        --red-text:       #f28b82;
+        --link:           #8ab4f8;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-2);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .topbar-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 0.5px solid var(--border);
+    }
+
+    .topbar-icon svg { width: 100%; height: 100%; display: block; }
+
+    .topbar-name {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-1);
+    }
+
+    .topbar-divider {
+      width: 1px; height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .topbar-section {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-3);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: var(--red-bg);
+      color: var(--red-text);
+      border: 0.5px solid var(--red-border);
+    }
+
+    .topbar-meta {
+      font-size: 12px;
+      color: var(--text-4);
+    }
+
+    .shell {
+      display: flex;
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: var(--header-h);
+      left: 0; bottom: 0;
+      overflow-y: auto;
+      background: var(--bg-side);
+      border-right: 1px solid var(--border-light);
+      padding: 12px 0 40px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .sb-group {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--text-4);
+      padding: 10px 16px 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sb-group .arrow { margin-left: auto; font-size: 14px; opacity: 0.5; }
+
+    .sb-link {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-2);
+      padding: 6px 14px 6px 22px;
+      border-radius: 0 20px 20px 0;
+      margin-right: 10px;
+      text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+      line-height: 1.4;
+    }
+
+    .sb-link:hover { background: var(--bg-hover); color: var(--text-1); text-decoration: none; }
+
+    .sb-link.active {
+      background: var(--bg-active);
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      padding: 36px 32px 80px 44px;
+    }
+
+    .content {
+      flex: 1;
+      max-width: 720px;
+      min-width: 0;
+    }
+
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--text-4);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a { color: var(--text-4); }
+    .breadcrumb a:hover { color: var(--blue); text-decoration: none; }
+    .breadcrumb .sep { font-size: 11px; opacity: 0.5; }
+
+    .feedback {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-4);
+      margin-bottom: 6px;
+    }
+
+    .feedback button {
+      width: 30px; height: 30px;
+      border: none; background: transparent;
+      border-radius: 50%; cursor: pointer;
+      font-size: 14px; color: var(--text-3);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s;
+    }
+
+    .feedback button:hover { background: var(--bg-hover); }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.2px;
+      color: var(--text-1);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .callout-blue  { background: var(--blue-bg);  border-left: 3px solid var(--blue);         color: var(--blue-text);  }
+    .callout-amber { background: var(--amber-bg); border-left: 3px solid var(--amber-border); color: var(--amber-text); }
+    .callout-green { background: var(--green-bg); border-left: 3px solid var(--green-border); color: var(--green-text); }
+    .callout-red   { background: var(--red-bg);   border-left: 3px solid var(--red-border);   color: var(--red-text);   }
+
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout p { margin: 0; }
+    .callout strong { font-weight: 600; }
+
+    .intro {
+      font-size: 14.5px;
+      color: var(--text-2);
+      line-height: 1.85;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .steps { display: flex; flex-direction: column; gap: 0; margin: 16px 0; }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      padding: 14px 0;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 44px;
+      bottom: -14px;
+      width: 2px;
+      background: var(--border-light);
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body { flex: 1; }
+
+    .step-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-1);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--text-2);
+      line-height: 1.7;
+    }
+
+    .section {
+      padding: 26px 0 22px;
+      border-bottom: 1px solid var(--border-light);
+      scroll-margin-top: 120px;
+    }
+
+    .section:last-of-type { border-bottom: none; }
+
+    .section h2 {
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.1px;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .section p {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13.5px;
+    }
+
+    .data-table thead th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--text-4);
+      padding: 8px 14px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .data-table tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.1s;
+    }
+
+    .data-table tbody tr:hover { background: var(--bg-side); }
+    .data-table tbody tr:last-child { border-bottom: none; }
+
+    .data-table td {
+      padding: 11px 14px;
+      color: var(--text-2);
+      vertical-align: top;
+      line-height: 1.6;
+    }
+
+    .data-table td:first-child { font-weight: 500; color: var(--text-1); }
+
+    .badge-del {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px;
+      background: var(--green-bg); color: var(--green-text);
+      border: 0.5px solid var(--green-border); white-space: nowrap;
+    }
+
+    .badge-ret {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px;
+      background: var(--amber-bg); color: var(--amber-text);
+      border: 0.5px solid var(--amber-border); white-space: nowrap;
+    }
+
+    .pp-list { list-style: none; margin: 8px 0 10px; }
+
+    .pp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.75;
+      padding: 3px 0;
+    }
+
+    .pp-list li::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--text-4);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+
+    .footer-card {
+      margin-top: 48px;
+      padding: 24px 28px;
+      background: var(--bg-side);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-q { font-size: 17px; font-weight: 500; color: var(--text-1); margin-bottom: 3px; }
+    .footer-sub { font-size: 13px; color: var(--text-3); }
+
+    .footer-btn {
+      font-size: 13px; font-weight: 500;
+      padding: 10px 22px; border-radius: 4px;
+      background: var(--blue); color: #fff;
+      text-decoration: none; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: background 0.15s;
+    }
+
+    .footer-btn:hover { background: var(--blue-dark); text-decoration: none; color: #fff; }
+
+    .page-end {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-4);
+      padding: 32px 0 0;
+    }
+
+    .toc-panel {
+      width: var(--toc-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--header-h) + 36px);
+      align-self: flex-start;
+      margin-left: 36px;
+      padding-left: 18px;
+      border-left: 1px solid var(--border-light);
+    }
+
+    .toc-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.7px; text-transform: uppercase;
+      color: var(--text-4); margin-bottom: 10px;
+    }
+
+    .toc-item {
+      display: block;
+      font-size: 12px; color: var(--text-3);
+      padding: 4px 0 4px 8px;
+      border-left: 2px solid transparent;
+      margin-left: -9px;
+      text-decoration: none; line-height: 1.4;
+      transition: color 0.12s, border-color 0.12s;
+    }
+
+    .toc-item:hover { color: var(--blue); text-decoration: none; }
+
+    .toc-item.active {
+      color: var(--blue);
+      border-left-color: var(--blue);
+      font-weight: 500;
+    }
+
+    @media (max-width: 1080px) {
+      .toc-panel { display: none; }
+      .main { padding-right: 24px; }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 24px 16px 60px; }
+      .page-title { font-size: 22px; }
+      .data-table { font-size: 12.5px; }
+      .data-table thead th, .data-table td { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="topbar-icon">
+      <svg viewBox="963 125 2274 2275" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+        <defs><clipPath id="ic"><rect x="963" y="125" width="2274" height="2275"/></clipPath></defs>
+        <g clip-path="url(#ic)">
+          <path d="M963 504.008C963 294.688 1132.69 125 1342.01 125L2857.99 125C3067.31 125 3237 294.688 3237 504.008L3237 2019.99C3237 2229.32 3067.31 2399 2857.99 2399L1342.01 2399C1132.69 2399 963 2229.32 963 2019.99Z" fill="#0A0A0A"/>
+          <path d="M2190 954C2190 1003.71 2149.48 1044 2099.5 1044 2049.52 1044 2009 1003.71 2009 954 2009 904.294 2049.52 864 2099.5 864 2149.48 864 2190 904.294 2190 954Z" fill="#FFF"/>
+          <path d="M2361 948.5C2361 1092.37 2244.15 1209 2100 1209 1955.85 1209 1839 1092.37 1839 948.5 1839 804.63 1955.85 688 2100 688 2244.15 688 2361 804.63 2361 948.5Z" fill="#FFF"/>
+          <path d="M1504 1784C1504 1454 1702.5 1289 2099.5 1289 2496.5 1289 2695 1454 2695 1784" fill="#FFF"/>
+        </g>
+      </svg>
+    </div>
+    <span class="topbar-name">Postals</span>
+  </a>
+  <div class="topbar-divider"></div>
+  <span class="topbar-section">Account Deletion</span>
+  <div class="topbar-right">
+    <span class="topbar-meta">Effective: January 8, 2026</span>
+    <span class="topbar-badge">Data &amp; Privacy</span>
+  </div>
+</header>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="sb-group">Overview <span class="arrow">›</span></div>
+    <a class="sb-link" href="#">Introduction</a>
+
+    <div class="sb-group" style="margin-top:6px">Sections <span class="arrow">›</span></div>
+    <a class="sb-link active" href="#s1">1. How to request deletion</a>
+    <a class="sb-link" href="#s2">2. What gets deleted</a>
+    <a class="sb-link" href="#s3">3. Data retention</a>
+    <a class="sb-link" href="#s4">4. Timeline</a>
+    <a class="sb-link" href="#s5">5. Contact &amp; support</a>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+
+      <div class="feedback">
+        <span>Was this helpful?</span>
+        <button title="Yes">👍</button>
+        <button title="No">👎</button>
+      </div>
+
+      <div class="breadcrumb">
+        <a href="#">Postals</a>
+        <span class="sep">›</span>
+        <a href="#">Legal</a>
+        <span class="sep">›</span>
+        <span>Account Deletion</span>
+      </div>
+
+      <h1 class="page-title">Account Deletion — Postals</h1>
+
+      <p class="intro">
+        This page explains how users of <strong>Postals</strong> can request the permanent deletion of their account and associated data. We are committed to giving you full control over your personal information. Deletion is free, straightforward, and can be initiated directly from the app or by contacting our support team.
+      </p>
+
+      <!-- 1 -->
+      <section class="section" id="s1">
+        <h2>1. How to request account deletion</h2>
+        <p>There are two ways to request that your Postals account be permanently deleted:</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">A</div>
+            <div class="step-body">
+              <div class="step-title">Delete directly from the app (recommended)</div>
+              <div class="step-desc">Open the <strong>Postals</strong> app and go to your <strong>Profile</strong>. Inside the profile menu, find <strong>Account Settings</strong> and tap <strong>Delete Account</strong>. Follow the on-screen confirmation steps. This is the fastest way to complete the process — no waiting required.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">B</div>
+            <div class="step-body">
+              <div class="step-title">Contact us by email</div>
+              <div class="step-desc">If you cannot access the app or prefer to request deletion manually, send an email to <a href="mailto:jhuniorgonzalez2305@gmail.com">jhuniorgonzalez2305@gmail.com</a> with the subject <em>"Account Deletion Request"</em>. Please include the username or phone number linked to your account so we can locate and process your request promptly.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">C</div>
+            <div class="step-body">
+              <div class="step-title">Confirm your identity</div>
+              <div class="step-desc">For your security, we may ask you to verify your identity before proceeding — whether through the in-app flow or by email. This step protects you from unauthorized deletion requests on your account.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-blue">
+          <span class="callout-icon">ℹ️</span>
+          <p><strong>Before you proceed:</strong> Account deletion is permanent and cannot be undone. If you simply want to take a break, consider logging out or disabling notifications instead.</p>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="section" id="s2">
+        <h2>2. What data gets deleted</h2>
+        <p>Upon deletion of your Postals account — and absent any applicable legal retention requirement — the following data is <strong>permanently and immediately deleted</strong> from our systems:</p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Data type</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Account &amp; profile</td>
+              <td>Username, display name, profile picture, bio</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Photos &amp; videos</td>
+              <td>All media files you have uploaded or shared</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Posts &amp; stories</td>
+              <td>All posts, captions, reactions, and story content</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Messages</td>
+              <td>Direct messages sent or received in the app</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Comments &amp; likes</td>
+              <td>All interactions left on other users' content</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Contact data</td>
+              <td>Phone number and linked contact information</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Usage &amp; activity logs</td>
+              <td>App usage history, device info, session data</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+            <tr>
+              <td>Preferences &amp; settings</td>
+              <td>Notification settings, interests, app preferences</td>
+              <td><span class="badge-del">✓ Deleted</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-green">
+          <span class="callout-icon">✅</span>
+          <p><strong>Immediate deletion:</strong> All data listed above is removed immediately upon completion of the deletion request, provided there is no active legal hold on your account.</p>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="section" id="s3">
+        <h2>3. Data retention for legal purposes</h2>
+        <p>In certain circumstances, we are legally required to retain some or all of your data beyond your deletion request. This occurs when:</p>
+
+        <ul class="pp-list">
+          <li>A government authority, law enforcement agency, or court has issued a valid legal order requiring data preservation</li>
+          <li>Your account is under investigation for serious offenses such as fraud, terrorism, child exploitation, or human trafficking</li>
+          <li>Retention is necessary to resolve an active dispute or enforce our Terms of Service</li>
+        </ul>
+
+        <div class="callout callout-amber">
+          <span class="callout-icon">⚠️</span>
+          <p><strong>Legal hold:</strong> When a legal retention requirement applies, the following types of data may be preserved for as long as legally required — this includes photos, videos, messages, posts, account details, and any other content or metadata relevant to the legal matter.</p>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Data type</th>
+              <th>Retained when a legal hold applies</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Photos &amp; videos</td>
+              <td>All media associated with the account</td>
+              <td><span class="badge-ret">⚖ Retained</span></td>
+            </tr>
+            <tr>
+              <td>Messages</td>
+              <td>Complete message history</td>
+              <td><span class="badge-ret">⚖ Retained</span></td>
+            </tr>
+            <tr>
+              <td>Posts &amp; content</td>
+              <td>All posts, stories, and comments</td>
+              <td><span class="badge-ret">⚖ Retained</span></td>
+            </tr>
+            <tr>
+              <td>Account details</td>
+              <td>Profile information and registration data</td>
+              <td><span class="badge-ret">⚖ Retained</span></td>
+            </tr>
+            <tr>
+              <td>Logs &amp; metadata</td>
+              <td>Activity logs, IP addresses, device data</td>
+              <td><span class="badge-ret">⚖ Retained</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Once the legal obligation is fulfilled, all retained data will be deleted in accordance with applicable regulations. Retained data is never used for marketing, analytics, or any other commercial purpose.</p>
+
+        <div class="callout callout-red">
+          <span class="callout-icon">🔒</span>
+          <p><strong>Data security during retention:</strong> Any data preserved under a legal hold is stored securely with strictly limited access. It is only shared as required by the applicable legal order.</p>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="section" id="s4">
+        <h2>4. Deletion timeline</h2>
+        <p>Here is what happens after you submit a deletion request:</p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <div class="step-title">Request received</div>
+              <div class="step-desc">Your deletion request is logged immediately — whether submitted through the in-app flow or via email to our support address.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <div class="step-title">Identity verification (if required)</div>
+              <div class="step-desc">We may verify your identity before proceeding. For email-based requests this typically takes no more than 24–48 business hours.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <div class="step-title">Account access revoked immediately</div>
+              <div class="step-desc">Once deletion is confirmed, your account is deactivated, all active sessions are terminated, and your profile becomes inaccessible to other users.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <div class="step-title">Data permanently deleted</div>
+              <div class="step-desc">All your data is removed from our production servers immediately, subject to the legal retention exceptions described in Section 3 above.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="section" id="s5">
+        <h2>5. Contact &amp; support</h2>
+        <p>If you have questions about account deletion or need assistance at any step, our team is ready to help:</p>
+
+        <ul class="pp-list">
+          <li><strong>In-app:</strong> Go to your Profile menu and tap <em>Help &amp; Support</em></li>
+          <li><strong>Email:</strong> <a href="mailto:jhuniorgonzalez2305@gmail.com">jhuniorgonzalez2305@gmail.com</a> — include your username and a brief description of your request</li>
+        </ul>
+
+        <p>We aim to respond to all email inquiries within 2 business days.</p>
+      </section>
+
+      <div class="footer-card">
+        <div>
+          <div class="footer-q">Need help deleting your account?</div>
+          <div class="footer-sub">Our support team is here — reach out anytime.</div>
+        </div>
+        <a href="mailto:jhuniorgonzalez2305@gmail.com" class="footer-btn">✉ Contact support</a>
+      </div>
+
+      <p class="page-end">© 2026 Postals. All rights reserved.</p>
+    </div>
+
+    <aside class="toc-panel">
+      <div class="toc-label">On this page</div>
+      <a class="toc-item active" href="#s1">How to request deletion</a>
+      <a class="toc-item" href="#s2">What gets deleted</a>
+      <a class="toc-item" href="#s3">Data retention</a>
+      <a class="toc-item" href="#s4">Timeline</a>
+      <a class="toc-item" href="#s5">Contact &amp; support</a>
+    </aside>
+  </main>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const sbLinks  = document.querySelectorAll('.sb-link[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top < 130) current = s.id;
+    });
+    tocItems.forEach(el => el.classList.toggle('active', el.getAttribute('href') === '#' + current));
+    sbLinks.forEach(el => el.classList.toggle('active', el.getAttribute('href') === '#' + current));
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+
+</body>
+</html>
