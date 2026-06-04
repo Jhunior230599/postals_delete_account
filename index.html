@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postals – Eliminación de cuenta</title>
+  <meta name="description" content="Cómo solicitar la eliminación de tu cuenta en Postals." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:             #ffffff;
+      --bg-side:        #f8f9fa;
+      --bg-hover:       #f1f3f4;
+      --bg-active:      #e8f0fe;
+      --text-1:         #202124;
+      --text-2:         #3c4043;
+      --text-3:         #5f6368;
+      --text-4:         #80868b;
+      --border:         #dadce0;
+      --border-light:   #e8eaed;
+      --blue:           #1a73e8;
+      --blue-dark:      #1557b0;
+      --blue-bg:        #e8f0fe;
+      --blue-border:    #aecbfa;
+      --blue-text:      #185abc;
+      --red-bg:         #fce8e6;
+      --red-border:     #ea4335;
+      --red-text:       #c5221f;
+      --green-bg:       #e6f4ea;
+      --green-border:   #34a853;
+      --green-text:     #137333;
+      --amber-bg:       #fef7e0;
+      --amber-border:   #fbbc04;
+      --amber-text:     #5c3c00;
+      --link:           #1a73e8;
+      --header-h:       56px;
+      --sidebar-w:      248px;
+      --toc-w:          196px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:             #111110;
+        --bg-side:        #1a1a19;
+        --bg-hover:       #242422;
+        --bg-active:      #042c53;
+        --text-1:         #e8e6e0;
+        --text-2:         #9aa0a6;
+        --text-3:         #80868b;
+        --text-4:         #5f6368;
+        --border:         #3c4043;
+        --border-light:   #2d2f31;
+        --blue:           #8ab4f8;
+        --blue-dark:      #aecbfa;
+        --blue-bg:        #042c53;
+        --blue-border:    #185abc;
+        --blue-text:      #aecbfa;
+        --red-bg:         #3c1010;
+        --red-border:     #c5221f;
+        --red-text:       #f28b82;
+        --green-bg:       #0a2e18;
+        --green-border:   #137333;
+        --green-text:     #81c995;
+        --amber-bg:       #3d2800;
+        --amber-border:   #8a6200;
+        --amber-text:     #fdd663;
+        --link:           #8ab4f8;
+      }
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-2);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════════
+       TOP BAR
+    ══════════════════════════════════ */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .topbar-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 0.5px solid var(--border);
+    }
+
+    .topbar-icon svg { width: 100%; height: 100%; display: block; }
+
+    .topbar-name {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-1);
+      letter-spacing: 0;
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .topbar-section {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-3);
+    }
+
+    .topbar-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .topbar-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: var(--red-bg);
+      color: var(--red-text);
+      border: 0.5px solid var(--red-border);
+    }
+
+    .topbar-meta {
+      font-size: 12px;
+      color: var(--text-4);
+    }
+
+    /* ══════════════════════════════════
+       LAYOUT SHELL
+    ══════════════════════════════════ */
+    .shell {
+      display: flex;
+      margin-top: var(--header-h);
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    /* ══════════════════════════════════
+       LEFT SIDEBAR
+    ══════════════════════════════════ */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: var(--header-h);
+      left: 0; bottom: 0;
+      overflow-y: auto;
+      background: var(--bg-side);
+      border-right: 1px solid var(--border-light);
+      padding: 12px 0 40px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .sb-group {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--text-4);
+      padding: 10px 16px 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sb-group .arrow { margin-left: auto; font-size: 14px; opacity: 0.5; }
+
+    .sb-link {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-2);
+      padding: 6px 14px 6px 22px;
+      border-radius: 0 20px 20px 0;
+      margin-right: 10px;
+      text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+      line-height: 1.4;
+    }
+
+    .sb-link:hover { background: var(--bg-hover); color: var(--text-1); text-decoration: none; }
+
+    .sb-link.active {
+      background: var(--bg-active);
+      color: var(--blue);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════════ */
+    .main {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      padding: 36px 32px 80px 44px;
+    }
+
+    .content {
+      flex: 1;
+      max-width: 720px;
+      min-width: 0;
+    }
+
+    /* breadcrumb */
+    .breadcrumb {
+      font-size: 12px;
+      color: var(--text-4);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a { color: var(--text-4); }
+    .breadcrumb a:hover { color: var(--blue); text-decoration: none; }
+    .breadcrumb .sep { font-size: 11px; opacity: 0.5; }
+
+    /* feedback */
+    .feedback {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--text-4);
+      margin-bottom: 6px;
+    }
+
+    .feedback button {
+      width: 30px; height: 30px;
+      border: none; background: transparent;
+      border-radius: 50%; cursor: pointer;
+      font-size: 14px; color: var(--text-3);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s;
+    }
+
+    .feedback button:hover { background: var(--bg-hover); }
+
+    /* page title */
+    .page-title {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: -0.2px;
+      color: var(--text-1);
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    /* callouts */
+    .callout {
+      display: flex;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .callout-blue {
+      background: var(--blue-bg);
+      border-left: 3px solid var(--blue);
+      color: var(--blue-text);
+    }
+
+    .callout-red {
+      background: var(--red-bg);
+      border-left: 3px solid var(--red-border);
+      color: var(--red-text);
+    }
+
+    .callout-green {
+      background: var(--green-bg);
+      border-left: 3px solid var(--green-border);
+      color: var(--green-text);
+    }
+
+    .callout-amber {
+      background: var(--amber-bg);
+      border-left: 3px solid var(--amber-border);
+      color: var(--amber-text);
+    }
+
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout p { margin: 0; }
+    .callout strong { font-weight: 600; }
+
+    /* intro */
+    .intro {
+      font-size: 14.5px;
+      color: var(--text-2);
+      line-height: 1.85;
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    /* sections */
+    .section {
+      padding: 26px 0 22px;
+      border-bottom: 1px solid var(--border-light);
+      scroll-margin-top: 120px;
+    }
+
+    .section:last-of-type { border-bottom: none; }
+
+    .section h2 {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.1px;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .section p {
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    /* lists */
+    .pp-list {
+      list-style: none;
+      margin: 8px 0 10px;
+    }
+
+    .pp-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.75;
+      padding: 3px 0;
+    }
+
+    .pp-list li::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--text-4);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+
+    /* numbered steps */
+    .steps-list {
+      list-style: none;
+      margin: 16px 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .steps-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 14px;
+      color: var(--text-2);
+      line-height: 1.75;
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* data table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 10px;
+      font-size: 13.5px;
+    }
+
+    .data-table th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      padding: 8px 14px;
+      border-bottom: 2px solid var(--border);
+      background: var(--bg-side);
+    }
+
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-light);
+      color: var(--text-2);
+      line-height: 1.6;
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table tr:hover td { background: var(--bg-hover); }
+
+    .badge-deleted {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--red-bg);
+      color: var(--red-text);
+      border: 0.5px solid var(--red-border);
+    }
+
+    .badge-retained {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 0.5px solid var(--amber-border);
+    }
+
+    /* method cards */
+    .method-cards {
+      display: flex;
+      gap: 16px;
+      margin: 18px 0 10px;
+      flex-wrap: wrap;
+    }
+
+    .method-card {
+      flex: 1;
+      min-width: 240px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 20px;
+      background: var(--bg-side);
+    }
+
+    .method-card-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .method-card-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-1);
+      margin-bottom: 6px;
+    }
+
+    .method-card-desc {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .method-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--blue);
+    }
+
+    .method-card-link:hover { text-decoration: underline; }
+
+    /* footer card */
+    .footer-card {
+      margin-top: 48px;
+      padding: 24px 28px;
+      background: var(--bg-side);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-q {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text-1);
+      margin-bottom: 3px;
+    }
+
+    .footer-sub { font-size: 13px; color: var(--text-3); }
+
+    .footer-btn {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 22px;
+      border-radius: 4px;
+      background: var(--blue);
+      color: #fff;
+      text-decoration: none;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+
+    .footer-btn:hover { background: var(--blue-dark); text-decoration: none; color: #fff; }
+
+    .page-end {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-4);
+      padding: 32px 0 0;
+    }
+
+    /* ══════════════════════════════════
+       RIGHT TOC PANEL
+    ══════════════════════════════════ */
+    .toc-panel {
+      width: var(--toc-w);
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--header-h) + 36px);
+      align-self: flex-start;
+      margin-left: 36px;
+      padding-left: 18px;
+      border-left: 1px solid var(--border-light);
+    }
+
+    .toc-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      color: var(--text-4);
+      margin-bottom: 10px;
+    }
+
+    .toc-item {
+      display: block;
+      font-size: 12px;
+      color: var(--text-3);
+      padding: 4px 0 4px 8px;
+      border-left: 2px solid transparent;
+      margin-left: -9px;
+      text-decoration: none;
+      line-height: 1.4;
+      transition: color 0.12s, border-color 0.12s;
+    }
+
+    .toc-item:hover { color: var(--blue); text-decoration: none; }
+
+    .toc-item.active {
+      color: var(--blue);
+      border-left-color: var(--blue);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 1080px) {
+      .toc-panel { display: none; }
+      .main { padding-right: 24px; }
+    }
+
+    @media (max-width: 720px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 24px 16px 60px; }
+      .page-title { font-size: 22px; }
+      .method-cards { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <div class="topbar-icon">
+      <svg viewBox="963 125 2274 2275" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+        <defs><clipPath id="ic"><rect x="963" y="125" width="2274" height="2275"/></clipPath></defs>
+        <g clip-path="url(#ic)">
+          <path d="M963 504.008C963 294.688 1132.69 125 1342.01 125L2857.99 125C3067.31 125 3237 294.688 3237 504.008L3237 2019.99C3237 2229.32 3067.31 2399 2857.99 2399L1342.01 2399C1132.69 2399 963 2229.32 963 2019.99Z" fill="#0A0A0A"/>
+          <path d="M2190 954C2190 1003.71 2149.48 1044 2099.5 1044 2049.52 1044 2009 1003.71 2009 954 2009 904.294 2049.52 864 2099.5 864 2149.48 864 2190 904.294 2190 954Z" fill="#FFF"/>
+          <path d="M2361 948.5C2361 1092.37 2244.15 1209 2100 1209 1955.85 1209 1839 1092.37 1839 948.5 1839 804.63 1955.85 688 2100 688 2244.15 688 2361 804.63 2361 948.5Z" fill="#FFF"/>
+          <path d="M1504 1784C1504 1454 1702.5 1289 2099.5 1289 2496.5 1289 2695 1454 2695 1784" fill="#FFF"/>
+        </g>
+      </svg>
+    </div>
+    <span class="topbar-name">Postals</span>
+  </a>
+  <div class="topbar-divider"></div>
+  <span class="topbar-section">Eliminación de cuenta</span>
+  <div class="topbar-right">
+    <span class="topbar-meta">Actualizado: junio 2026</span>
+    <span class="topbar-badge">Importante</span>
+  </div>
+</header>
+
+<!-- SHELL -->
+<div class="shell">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-group">Navegación <span class="arrow">›</span></div>
+    <a class="sb-link" href="#">Inicio</a>
+    <a class="sb-link" href="#">Política de privacidad</a>
+
+    <div class="sb-group" style="margin-top:6px">En esta página <span class="arrow">›</span></div>
+    <a class="sb-link active" href="#s1">Cómo eliminar tu cuenta</a>
+    <a class="sb-link" href="#s2">Opción 1 — Desde la app</a>
+    <a class="sb-link" href="#s3">Opción 2 — Por correo</a>
+    <a class="sb-link" href="#s4">Datos que se eliminan</a>
+    <a class="sb-link" href="#s5">Datos que se conservan</a>
+    <a class="sb-link" href="#s6">Plazos de retención</a>
+    <a class="sb-link" href="#s7">Preguntas frecuentes</a>
+    <a class="sb-link" href="#s8">Contacto</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="content">
+
+      <div class="feedback">
+        <span>¿Te resultó útil?</span>
+        <button title="Sí">👍</button>
+        <button title="No">👎</button>
+      </div>
+
+      <div class="breadcrumb">
+        <a href="#">Postals</a>
+        <span class="sep">›</span>
+        <a href="#">Legal</a>
+        <span class="sep">›</span>
+        <span>Eliminación de cuenta</span>
+      </div>
+
+      <h1 class="page-title">Eliminar tu cuenta de Postals</h1>
+
+      <p class="intro">
+        En Postals respetamos tu derecho a controlar tus datos personales. Esta página explica cómo puedes solicitar la eliminación de tu cuenta, qué información se borrará de forma permanente y qué datos pueden conservarse temporalmente por razones legales o de seguridad.
+      </p>
+
+      <!-- 1 -->
+      <section class="section" id="s1">
+        <h2>1. Cómo solicitar la eliminación de tu cuenta</h2>
+        <p>Puedes solicitar que tu cuenta de Postals sea eliminada de dos formas: directamente desde el menú de perfil en la app, o enviando un correo a nuestro equipo de soporte. Ambas opciones están disponibles en cualquier momento.</p>
+        <div class="callout callout-amber">
+          <span class="callout-icon">⚠️</span>
+          <p><strong>Aviso importante:</strong> La eliminación de la cuenta es permanente e irreversible. Una vez procesada la solicitud, no será posible recuperar los datos borrados ni reactivar la cuenta con el mismo identificador.</p>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="section" id="s2">
+        <h2>2. Opción 1 — Desde el menú de perfil en la app</h2>
+        <p>La forma más rápida de eliminar tu cuenta es a través de la propia aplicación Postals, sin necesidad de contactar a nadie. Sigue estos pasos:</p>
+        <ol class="steps-list">
+          <li>
+            <span class="step-num">1</span>
+            <span>Abre la aplicación <strong>Postals</strong> e inicia sesión con tu cuenta.</span>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <span>Toca tu foto de perfil o el icono de perfil ubicado en la esquina superior de la pantalla principal.</span>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <span>En el menú de perfil, busca la opción <strong>"Configuración"</strong> o <strong>"Ajustes de cuenta"</strong>.</span>
+          </li>
+          <li>
+            <span class="step-num">4</span>
+            <span>Selecciona <strong>"Eliminar cuenta"</strong> al final de la sección de configuración.</span>
+          </li>
+          <li>
+            <span class="step-num">5</span>
+            <span>Lee el resumen de lo que se borrará y confirma tu decisión introduciendo tu contraseña cuando se te solicite.</span>
+          </li>
+          <li>
+            <span class="step-num">6</span>
+            <span>Tu solicitud se procesará en un plazo de <strong>hasta 30 días</strong>. Recibirás una confirmación por correo electrónico cuando la eliminación sea efectiva.</span>
+          </li>
+        </ol>
+        <div class="callout callout-blue">
+          <span class="callout-icon">ℹ️</span>
+          <p>Si no encuentras la opción dentro de la app, asegúrate de tener instalada la versión más reciente de Postals. También puedes usar la opción 2 a continuación para solicitar la eliminación por correo.</p>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="section" id="s3">
+        <h2>3. Opción 2 — Contacto por correo electrónico</h2>
+        <p>Si necesitas ayuda para eliminar tu cuenta o prefieres hacerlo con asistencia directa, puedes contactarnos por correo electrónico:</p>
+        <div class="method-cards">
+          <div class="method-card">
+            <span class="method-card-icon">✉️</span>
+            <div class="method-card-title">Correo de soporte</div>
+            <div class="method-card-desc">
+              Escríbenos indicando el nombre de usuario o correo asociado a tu cuenta y tu solicitud de eliminación. Responderemos en un plazo de 2 a 5 días hábiles.
+            </div>
+            <a class="method-card-link" href="mailto:jhuniorgonzalez2305@gmail.com">
+              jhuniorgonzalez2305@gmail.com →
+            </a>
+          </div>
+        </div>
+        <p style="margin-top:10px;">Por favor incluye en tu correo:</p>
+        <ul class="pp-list">
+          <li>El nombre de usuario o correo asociado a la cuenta</li>
+          <li>El asunto: <strong>"Solicitud de eliminación de cuenta"</strong></li>
+          <li>Cualquier detalle adicional que nos ayude a verificar tu identidad</li>
+        </ul>
+      </section>
+
+      <!-- 4 -->
+      <section class="section" id="s4">
+        <h2>4. Datos que se eliminarán</h2>
+        <p>Al confirmar la eliminación de tu cuenta de Postals, los siguientes datos serán borrados de forma permanente de nuestros sistemas activos:</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tipo de dato</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Perfil de usuario</strong></td>
+              <td>Nombre, foto de perfil, nombre de usuario, biografía</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Datos de contacto</strong></td>
+              <td>Dirección de correo electrónico, número de teléfono</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Contenido publicado</strong></td>
+              <td>Postales, fotos, mensajes, comentarios y publicaciones creadas</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Preferencias y ajustes</strong></td>
+              <td>Configuración de la app, intereses, historial de preferencias</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Datos de uso</strong></td>
+              <td>Historial de actividad dentro de la aplicación</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+            <tr>
+              <td><strong>Datos técnicos</strong></td>
+              <td>Información de dispositivo y sesiones vinculadas a tu cuenta</td>
+              <td><span class="badge-deleted">🗑 Eliminado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 5 -->
+      <section class="section" id="s5">
+        <h2>5. Datos que pueden conservarse temporalmente</h2>
+        <p>En determinadas circunstancias, cierta información puede conservarse de forma temporal incluso después de eliminar tu cuenta. Esto ocurre únicamente cuando existe una obligación legal o un interés legítimo que lo justifique:</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Tipo de dato</th>
+              <th>Motivo de retención</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Registros de transacciones</strong></td>
+              <td>Obligaciones fiscales y contables exigidas por ley</td>
+              <td><span class="badge-retained">⏳ Retenido</span></td>
+            </tr>
+            <tr>
+              <td><strong>Registros de seguridad</strong></td>
+              <td>Detección de fraude, abuso o actividad ilícita</td>
+              <td><span class="badge-retained">⏳ Retenido</span></td>
+            </tr>
+            <tr>
+              <td><strong>Datos para disputas legales</strong></td>
+              <td>Resolución de reclamaciones, litigios o investigaciones activas</td>
+              <td><span class="badge-retained">⏳ Retenido</span></td>
+            </tr>
+            <tr>
+              <td><strong>Copias de seguridad</strong></td>
+              <td>Los datos pueden persistir en backups cifrados hasta su rotación</td>
+              <td><span class="badge-retained">⏳ Retenido</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="callout callout-blue">
+          <span class="callout-icon">ℹ️</span>
+          <p>Los datos conservados por obligación legal se mantienen de forma segura, no se utilizan con fines comerciales y son eliminados tan pronto como finaliza el período de retención requerido.</p>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="section" id="s6">
+        <h2>6. Plazos de retención adicionales</h2>
+        <p>Los períodos de retención para los datos que no se eliminan de inmediato son los siguientes:</p>
+        <ul class="pp-list">
+          <li><strong>Procesamiento de la solicitud:</strong> hasta 30 días desde la confirmación.</li>
+          <li><strong>Copias de seguridad (backups):</strong> hasta 90 días adicionales, tras los cuales los datos se borran en la rotación de los sistemas.</li>
+          <li><strong>Registros de seguridad y antifraude:</strong> hasta 12 meses desde la fecha de eliminación de la cuenta.</li>
+          <li><strong>Datos con obligación legal (fiscal, contable):</strong> según lo exija la legislación aplicable, generalmente entre 5 y 7 años.</li>
+          <li><strong>Investigaciones legales activas:</strong> hasta la resolución definitiva del proceso correspondiente.</li>
+        </ul>
+      </section>
+
+      <!-- 7 -->
+      <section class="section" id="s7">
+        <h2>7. Preguntas frecuentes</h2>
+
+        <p><strong>¿Puedo cancelar mi solicitud de eliminación?</strong><br>
+        Sí, siempre que la solicitud no haya sido procesada todavía. Escríbenos a <a href="mailto:jhuniorgonzalez2305@gmail.com">jhuniorgonzalez2305@gmail.com</a> lo antes posible con el asunto "Cancelar eliminación de cuenta".</p>
+
+        <p><strong>¿Qué pasa con el contenido que compartí con otros usuarios?</strong><br>
+        Las postales o contenido que ya fue visualizado por otros usuarios puede permanecer en el historial de esas personas. Tu nombre y perfil serán reemplazados por un identificador anónimo.</p>
+
+        <p><strong>¿Puedo crear una nueva cuenta con el mismo correo?</strong><br>
+        Sí. Una vez eliminada la cuenta y transcurrido el plazo de procesamiento, podrás registrarte nuevamente con la misma dirección de correo electrónico si lo deseas.</p>
+
+        <p><strong>¿Cómo sé que mi cuenta fue eliminada?</strong><br>
+        Recibirás un correo de confirmación en la dirección asociada a tu cuenta una vez que la eliminación sea efectiva.</p>
+      </section>
+
+      <!-- 8 -->
+      <section class="section" id="s8">
+        <h2>8. Contacto y soporte</h2>
+        <p>Si tienes dudas sobre el proceso de eliminación o necesitas asistencia adicional, nuestro equipo está disponible para ayudarte:</p>
+        <ul class="pp-list">
+          <li>✉️ Correo: <a href="mailto:jhuniorgonzalez2305@gmail.com">jhuniorgonzalez2305@gmail.com</a></li>
+          <li>📱 Sección de soporte dentro de la app Postals</li>
+        </ul>
+      </section>
+
+      <!-- Footer -->
+      <div class="footer-card">
+        <div>
+          <div class="footer-q">¿Necesitas ayuda con tu cuenta?</div>
+          <div class="footer-sub">Escríbenos y te responderemos en 2–5 días hábiles.</div>
+        </div>
+        <a href="mailto:jhuniorgonzalez2305@gmail.com" class="footer-btn">✉ Contactar soporte</a>
+      </div>
+
+      <p class="page-end">© 2026 Postals. Todos los derechos reservados.</p>
+    </div>
+
+    <!-- RIGHT TOC -->
+    <aside class="toc-panel">
+      <div class="toc-label">En esta página</div>
+      <a class="toc-item active" href="#s1">Cómo eliminar tu cuenta</a>
+      <a class="toc-item" href="#s2">Opción 1 — Desde la app</a>
+      <a class="toc-item" href="#s3">Opción 2 — Por correo</a>
+      <a class="toc-item" href="#s4">Datos eliminados</a>
+      <a class="toc-item" href="#s5">Datos conservados</a>
+      <a class="toc-item" href="#s6">Plazos de retención</a>
+      <a class="toc-item" href="#s7">Preguntas frecuentes</a>
+      <a class="toc-item" href="#s8">Contacto</a>
+    </aside>
+  </main>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  const tocItems = document.querySelectorAll('.toc-item');
+  const sbLinks  = document.querySelectorAll('.sb-link[href^="#"]');
+
+  function updateActive() {
+    let current = '';
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top < 130) current = s.id;
+    });
+    tocItems.forEach(el => el.classList.toggle('active', el.getAttribute('href') === '#' + current));
+    sbLinks.forEach(el => el.classList.toggle('active', el.getAttribute('href') === '#' + current));
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+
+</body>
+</html>
